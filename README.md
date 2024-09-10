@@ -19,7 +19,9 @@ to scale and automate the experiment in a Kubeflow cluster.
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-<br>
+> **Note**: If you're using Google Colab, make sure to enable the GPU runtime
+> before running the notebook and install the required dependencies, as shown
+> in the `requirements.txt` file.
 
 ## Approach
 
