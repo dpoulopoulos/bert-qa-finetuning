@@ -16,6 +16,10 @@ locally:
 - 📈 Track and visualize the experiment's configuration.
 - ✨ Automate model deployment by integrating KFP with CI/CD pipelines once.
 
+Here's how a complete pipeline looks like:
+
+![run](images/pipeline.png)
+
 ## What you'll need
 
 Before you start, make sure you have the following:
@@ -55,6 +59,23 @@ Before you start, make sure you have the following:
 
 1. Follow the instructions in the notebook to create, compile, and submit a
    Kubeflow Pipeline for fine-tuning BERT on the SQuAD dataset.
+
+1. Create a TensorBoard instance to monitor the training process. You can submit
+   the following YAML manifest, or use the UI to create one:
+
+    ```yaml
+    apiVersion: tensorboard.kubeflow.org/v1alpha1
+    kind: Tensorboard
+    metadata:
+      name: bert-squad-logs
+      namespace: kubeflow-user-example-com
+    spec:
+      logspath: pvc://bert-squad/logs
+    ```
+
+1. Access the TensorBoard instance to monitor the training process.
+
+  ![tensorboard](images/tensorboard.png)
 
 ## Next steps
 
