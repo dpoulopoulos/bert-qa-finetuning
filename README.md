@@ -21,6 +21,42 @@ to scale and automate the experiment in a Kubeflow cluster.
 
 <br>
 
+## Approach
+
+- Model Selection: I am using Hugging Face's ecosystem to fine-tune the
+  pre-trained BERT model ([bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased)).
+  The model was fine-tuned using the [SQuAD dataset](https://huggingface.co/datasets/rajpurkar/squad).
+- Evaluation: The model was evaluated using metrics such as exact match (EM)
+  and F1 score to assess how well it identified the correct span of the answer
+  from the context.
+
+## Results
+
+The fine-tuned model achieved:
+
+| Metric | Value  |
+|--------|--------|
+| EM     | 79.81  |
+| F1     | 87.49  |
+
+![TensorBoard](docs/source/images/tensorboard.png)
+
+## Challenges
+
+- Handling longer contexts: One of the key challenges encountered was the
+  handling of longer contexts, as BERT's input size is limited to 512 tokens.
+  Truncating or splitting contexts sometimes led to partial or incorrect
+  answers.
+- Fine-tuning on smaller datasets resulted in overfitting, requiring careful
+  hyperparameter tuning and regularization techniques. Stopping after `2` epochs
+  of training is sufficient.
+- The computational resources required for fine-tuning were significant,
+  necessitating the use of at least one GPU device for optimal training speed.
+  The whole training process took around 50 minutes on a single GPU. I
+  recommend using a GPU with at least `12GB` of memory and if possible,
+  distribute the training across multiple GPUs. The Kubeflow Pipeline Notebook
+  can be a starting point for scaling the experiment.
+
 # About BERT
 
 [BERT (Bidirectional Encoder Representations from Transformers)](https://arxiv.org/abs/1810.04805)
