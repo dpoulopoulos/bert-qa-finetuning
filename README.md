@@ -2,6 +2,7 @@
 
 > Fine-Tuning BERT for Question-Answering on Kubeflow.
 
+[![License](https://img.shields.io/badge/docs-passing-green)](https://dpoulopoulos.github.io/bert-qa-finetuning/)
 [![License](https://img.shields.io/badge/license-CC_BY--NC_4.0-green)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Pytorch](https://img.shields.io/badge/pytorch-v2.4.1-blue)](#pytorch)
 [![Kubeflow](https://img.shields.io/badge/kubeflow-v1.8-orange)](#kubeflow)
@@ -51,4 +52,5 @@ create, compile, and submit a Kubeflow Pipeline to fine-tune BERT. The pipeline
 will scale the experiment across multiple nodes in the cluster, running steps in
 parallel, and caching repeated ones to save time and resources.
 
-
+For more information on how to use the notebooks, please refer to the
+[documentation](https://dpoulopoulos.github.io/bert-qa-finetuning/).
