@@ -100,3 +100,11 @@ parallel, and caching repeated ones to save time and resources.
 
 For more information on how to use the notebooks, please refer to the
 [documentation](https://dpoulopoulos.github.io/bert-qa-finetuning/).
+
+# Resources
+
+- [Training BERT from scratch: Introduction](https://towardsdatascience.com/the-ultimate-guide-to-training-bert-from-scratch-introduction-b048682c795f)
+- [The BERT Tokenizer](https://towardsdatascience.com/the-ultimate-guide-to-training-bert-from-scratch-the-tokenizer-ddf30f124822)
+- [Preparing Data for BERT](https://towardsdatascience.com/the-ultimate-guide-to-training-bert-from-scratch-prepare-the-dataset-beaae6febfd5)
+- [Pre-training BERT](https://towardsdatascience.com/the-ultimate-guide-to-training-bert-from-scratch-final-act-eab78b0657bb)
+- [The Attention Mechanism](https://towardsdatascience.com/attention-please-25b2933309f4)
