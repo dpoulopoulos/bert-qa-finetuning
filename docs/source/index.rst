@@ -79,6 +79,14 @@ question-answer pairs on 500+ articles.
    kubeflow-pipelines
 
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Conceptual Guides:
+
+   bert
+   bert-qa
+
+
 .. Indices and tables
 .. ==================
 
