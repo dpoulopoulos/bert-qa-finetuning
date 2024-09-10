@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BERT for Question Answering &mdash; BERT on SQuAD 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="BERT" href="bert.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            BERT on SQuAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guides:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="local-setup.html">Local Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kubeflow-pipelines.html">Kubeflow Pipelines</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Conceptual Guides:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="bert.html">BERT</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BERT for Question Answering</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BERT on SQuAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">BERT for Question Answering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/bert-qa.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bert-for-question-answering">
+<h1>BERT for Question Answering<a class="headerlink" href="#bert-for-question-answering" title="Link to this heading"></a></h1>
+<p>Once pre-trained, we can specialize BERT on a specific task using a smaller
+labeled dataset. For example, let’s take a closer look at the Q&amp;A task:</p>
+<p>Fine-tuning BERT for Question Answering (Q&amp;A) tasks, such as the
+<a class="reference external" href="https://rajpurkar.github.io/SQuAD-explorer/">Stanford Question Answering Dataset (SQuAD)</a>,
+involves adjusting the model to predict the start and end positions of the
+answer in a given passage for a provided question. Here are the steps to
+fine-tune BERT for such tasks:</p>
+<ol class="arabic">
+<li><p><strong>Dataset Preparation</strong>:</p>
+<ul class="simple">
+<li><p>Define each dataset item with a question, a passage (or context), and the
+start and end positions of the answer within the passage as the label.</p></li>
+<li><p>Tokenize both the question and passage into subwords using BERT’s
+tokenizer. Separate the question from the passage using the <code class="docutils literal notranslate"><span class="pre">[SEP]</span></code> token
+and start the input sequence with the <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> token.</p></li>
+<li><p>Mark the question as segment <code class="docutils literal notranslate"><span class="pre">A</span></code> (or <code class="docutils literal notranslate"><span class="pre">0</span></code>) and the context as segment <code class="docutils literal notranslate"><span class="pre">B</span></code>
+(or <code class="docutils literal notranslate"><span class="pre">1</span></code>). Use this information to learn different embeddings for each
+segment, which are added to the word embeddings.</p></li>
+</ul>
+<p><img alt="BERT data preparation" src="_images/bert-data-prep.png" /></p>
+</li>
+<li><p><strong>Model Modification</strong>:</p>
+<ul class="simple">
+<li><p>Extract embeddings for each token in the sequence from the pre-trained
+BERT model.</p></li>
+<li><p>Add a dense (fully connected) layer on top of BERT, with two output nodes:
+one for predicting the start position and one for predicting the end
+position of the answer in the passage (see <a class="reference external" href="https://github.com/huggingface/transformers/blob/c385de24414e4ec6125ee14c46c128bfe70ecb66/src/transformers/models/bert/modeling_bert.py#L1803">code</a>).</p></li>
+</ul>
+</li>
+<li><p><strong>Training Objective</strong>:</p>
+<ul class="simple">
+<li><p>Output a score for each token in the passage, indicating how likely that
+token is the start of the answer, and another score for the end.</p></li>
+<li><p>Apply a SoftMax function over the sequence to get a probability
+distribution for the start and end positions.</p></li>
+<li><p>Use the sum of the negative log likelihood of the correct start and end
+positions as the loss function.</p></li>
+</ul>
+<p><img alt="BERT predictions" src="_images/bert-pred.png" /></p>
+</li>
+<li><p><strong>Training</strong>:</p>
+<ul class="simple">
+<li><p>Initialize training with pre-trained BERT weights.</p></li>
+<li><p>Apply a smaller learning rate (e.g., 2e-5 or 3e-5) since BERT is
+already pre-trained. Avoid using a larger learning rate, as it may cause
+the model to diverge.</p></li>
+<li><p>Fine-tune the model on the Q&amp;A dataset for several epochs, stopping when
+validation performance plateaus or decreases.</p></li>
+</ul>
+</li>
+<li><p><strong>Inference</strong>:</p>
+<ul class="simple">
+<li><p>Tokenize a new question and passage, and add the special <code class="docutils literal notranslate"><span class="pre">[CLS]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">[SEP]</span></code> tokens.</p></li>
+<li><p>Feed the tokens into the fine-tuned BERT model to get scores for the start
+and end positions of the answer.</p></li>
+<li><p>Select the tokens between the predicted start and end positions as the
+final answer.</p></li>
+<li><p>Apply constraints such as ensuring the end position is after the start and
+limiting the maximum answer length.</p></li>
+</ul>
+</li>
+<li><p><strong>Evaluation</strong>:</p>
+<ul class="simple">
+<li><p>Measure performance using common metrics like Exact Match (EM), which
+calculates the percentage of predictions that exactly match the ground
+truth and the F1 score to account for partial matches by considering
+overlapping words between the prediction and ground truth.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bert.html" class="btn btn-neutral float-left" title="BERT" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Dimitris Poulopoulos.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
