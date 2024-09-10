@@ -2,6 +2,8 @@
 
 > Fine-Tuning BERT for Question-Answering on Kubeflow.
 
+<br>
+
 [![License](https://img.shields.io/badge/docs-passing-green)](https://dpoulopoulos.github.io/bert-qa-finetuning/)
 [![License](https://img.shields.io/badge/license-CC_BY--NC_4.0-green)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Pytorch](https://img.shields.io/badge/pytorch-v2.4.1-blue)](#pytorch)
@@ -9,9 +11,15 @@
 [![Kubernetes](https://img.shields.io/badge/kubernetes-v1.29.3-orange)](#kubernetes)
 
 This repository contains the code for fine-tuning BERT on the SQuAD dataset to
-solve Question-Answering tasks. The can run locally, on a GPU Notebook server,
-or leverage [Kubeflow Pipelines (KFP)](https://www.kubeflow.org/docs/components/pipelines/)
+solve Question-Answering tasks. The code can run locally, on a GPU Notebook
+server, or leverage [Kubeflow Pipelines (KFP)](https://www.kubeflow.org/docs/components/pipelines/)
 to scale and automate the experiment in a Kubeflow cluster.
+
+<a target="_blank" href="https://colab.research.google.com/github/dpoulopoulos/bert-qa-finetuning/blob/main/bert-squad.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+<br>
 
 # About BERT
 
